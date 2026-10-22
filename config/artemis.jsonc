@@ -13,11 +13,11 @@
   // ------------------------------------------------------------------------------
   "default": {
     "provider": "openai",
-    "model": "qwen3.8-27b",
+    "model": "Qwen3.8-27B",
     "temperature": 0.0,
     "fallback": {
       "provider": "openai",
-      "model": "qwen3.8-27b-bak",
+      "model": "Qwen3.8-27B",
       "temperature": 0.0
     }
   },
@@ -28,8 +28,8 @@
   "presets": {
     "ent-default": {
       "provider": "openai",
-      "model": "qwen3.8-27b",
-      "fallback": { "provider": "openai", "model": "qwen3.8-27b-bak" }
+      "model": "Qwen3.8-27B",
+      "fallback": { "provider": "openai", "model": "Qwen3.8-27B" }
     },
     "local-ollama": {
       "provider": "openai",
@@ -46,15 +46,11 @@
     // log_analyzer, diagnoser, outputter, summarizer, pixel safety net ...)
     // inherit the single enterprise endpoint from "default" above.
 
-    // Object Detector: DISABLED on this fork.
-    // Upstream pins this node to a Gemini Robotics-ER model (sub-pixel
-    // coordinate grounding). A general multimodal model can run it, but
-    // accuracy must be validated first:
-    //   -> run the grounding mini-benchmark in docs/enterprise-llm.md §4,
-    //      then replace null with { "provider": "openai", "model": "qwen3.8-27b" }.
-    // Element-index-first locating (accessibility tree) covers native UI in the
-    // meantime; raise explorer tier (pro.explorer.mode=ultra) for canvas-heavy pages.
-    "object_detector": null,
+    // Object Detector: same enterprise endpoint (Qwen3.8-27B is multimodal).
+    // Coordinate-grounding accuracy is pending the mini-benchmark in
+    // docs/enterprise-llm.md §4; element-index-first locating (accessibility
+    // tree) covers native UI in the meantime.
+    "object_detector": { "provider": "openai", "model": "Qwen3.8-27B" },
 
     // Video Analyzer: inherits the default endpoint (universal multi-model
     // keyframe engine path; the Gemini-native Files-API path is not used here).
@@ -92,7 +88,7 @@
       "explorer_mode": "flash",
       "step_summarizer": {
         "enabled": true,
-        "model": "qwen3.8-27b",
+        "model": "Qwen3.8-27B",
         "prune_history_xml": true
       }
     },
@@ -150,7 +146,7 @@
         "max_steps": 12,
         "min_steps": 3,
         "target_source_tokens": 2000,
-        "model": "qwen3.8-27b",
+        "model": "Qwen3.8-27B",
         "max_chunks": 8
       },
       "recall": {
