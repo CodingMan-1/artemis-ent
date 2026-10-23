@@ -77,7 +77,7 @@ try:
     from admin_console.database.repositories.session_repository import session_repo
     from admin_console.database.repositories.step_repository import step_repo
     from admin_console.database.repositories.trace_repository import trace_repo
-    from admin_console.routers import media, replay, sessions, steps, stream, system, tasks
+    from admin_console.routers import cases, media, replay, sessions, steps, stream, system, tasks
     from admin_console.routers.replay import replay_manager
     from admin_console.services.ipc_service import ipc_service
     from admin_console.services.media_service import media_service
@@ -87,7 +87,7 @@ except ImportError:
     from apps.admin_console.core.security import SameOriginBoundaryMiddleware
     from apps.admin_console.core.state import state
     from apps.admin_console.database.repositories.session_repository import session_repo
-    from apps.admin_console.routers import media, replay, sessions, steps, stream, system, tasks
+    from apps.admin_console.routers import cases, media, replay, sessions, steps, stream, system, tasks
     from apps.admin_console.routers.replay import replay_manager
     from apps.admin_console.services.ipc_service import ipc_service
     from apps.admin_console.services.model_service import model_service
@@ -222,6 +222,7 @@ app.include_router(media.router)
 app.include_router(sessions.router)
 app.include_router(steps.router)
 app.include_router(tasks.router)
+app.include_router(cases.router)
 app.include_router(replay.router)
 app.include_router(system.router)
 
@@ -274,7 +275,10 @@ def _resolve_static_file(root: Path, relative_path: str) -> Path | None:
 
 @app.get("/", include_in_schema=False)
 async def serve_showcase_root():
-    """Explicitly serve the Showcase UI at the root path by default."""
+    """Serve the Showcase Work Console at the root (primary UI).
+
+    The Admin/用例中心 console stays at /admin (also /debug).
+    """
     return await serve_showcase_spa("")
 
 
@@ -295,6 +299,10 @@ async def serve_showcase_spa(full_path: str):
         raise HTTPException(status_code=404, detail="Endpoint not found")
 
     clean_path = full_path.strip("/")
+
+    # Enterprise fork: /showcase is an alias for the upstream Showcase SPA.
+    if clean_path == "showcase":
+        clean_path = ""
 
     # Admin / Debug Console routes
     if (

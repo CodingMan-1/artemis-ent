@@ -25,7 +25,7 @@ limitations under the License.
         (click)="agentService.activeTab.set('tasks')"
         >
         <span class="material-symbols-outlined tab-icon">list_alt</span>
-        <span class="tab-text">Task Queue</span>
+        <span class="tab-text">任务队列 </span>
       </button>
       <button
         class="tab-selector-btn"
@@ -33,7 +33,7 @@ limitations under the License.
         (click)="agentService.activeTab.set('notes')"
         >
         <span class="material-symbols-outlined tab-icon">description</span>
-        <span class="tab-text">Notes & Plans</span>
+        <span class="tab-text">笔记与计划 </span>
       </button>
     </div>
 
@@ -42,8 +42,8 @@ limitations under the License.
         <button
           class="btn-clear-history"
           (click)="clearHistory()"
-          title="Clear all tasks and history"
-          aria-label="Clear all tasks and history"
+          title="清空任务与历史"
+          aria-label="清空任务与历史"
           [disabled]="isSubmitting()"
           >
           <span class="material-symbols-outlined">delete</span>
@@ -95,8 +95,8 @@ limitations under the License.
                   type="button"
                   class="btn-stop-card"
                   (click)="stopTask(session.session_id, $event)"
-                  title="Stop this task"
-                  aria-label="Stop this task"
+                  title="停止此任务"
+                  aria-label="停止此任务"
                   >
                   <span class="material-symbols-outlined">stop_circle</span>
                 </button>
@@ -106,8 +106,8 @@ limitations under the License.
                   type="button"
                   class="btn-delete-card"
                   (click)="deleteTask(session.session_id, $event)"
-                  title="Delete this task"
-                  aria-label="Delete this task"
+                  title="删除此任务"
+                  aria-label="删除此任务"
                   [disabled]="isSubmitting()"
                   >
                   <span class="material-symbols-outlined">delete</span>
@@ -165,8 +165,8 @@ limitations under the License.
                       type="button"
                       class="btn-delete-card"
                       (click)="deleteTask(session.session_id, $event)"
-                      title="Delete this task"
-                      aria-label="Delete this task"
+                      title="删除此任务"
+                      aria-label="删除此任务"
                       [disabled]="isSubmitting()"
                       >
                       <span class="material-symbols-outlined">delete</span>
@@ -212,7 +212,7 @@ limitations under the License.
             <div class="empty-notes-icon">
               <span class="material-symbols-outlined">description</span>
             </div>
-            <h4 class="empty-notes-title">No Notes & Plans</h4>
+            <h4 class="empty-notes-title">暂无笔记与计划 </h4>
             <p class="empty-notes-subtitle">No notes or structured plans were recorded for this session.</p>
           </div>
         }

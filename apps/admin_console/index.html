@@ -19,7 +19,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemis Debug UI</title>
+    <title>Artemis 控制台 · 企业版</title>
     <link rel="icon" type="image/png" sizes="192x192" href="/logo.png?v=2">
     <link rel="icon" type="image/png" sizes="32x32" href="/logo.png?v=2">
     <link rel="icon" type="image/svg+xml" href="/logo.svg?v=2">
@@ -232,34 +232,140 @@
                 transform: scale(1.5);
                 opacity: 0;
             }
+
+        /* ================= Enterprise UI polish layer (fork) ================= */
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        #sidebar h2 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            color: #64748b;
+            margin: 20px 0 8px;
+            padding-left: 9px;
+            border-left: 3px solid #3182ce;
+            line-height: 1.2;
+        }
+        #sidebar h2:first-child {
+            margin-top: 0;
+        }
+        #content h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .refresh-btn {
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.10);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.2s;
+        }
+        .refresh-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.14);
+        }
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+        .session-item {
+            border-radius: 10px;
+        }
+        .session-item:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 1px 4px rgba(49, 130, 206, 0.12);
+        }
+        select, input[type="text"] {
+            border-radius: 8px;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #3182ce !important;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+        table {
+            border-radius: 8px;
+        }
+        table th {
+            background: #f8fafc !important;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            text-transform: none;
+        }
+        table tbody tr {
+            transition: background-color 0.1s;
+        }
+        table tbody tr:hover td {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar {
+            width: 9px;
+            height: 9px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+            background-clip: content-box;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
     </style>
 </head>
 <body>
     <div id="sidebar">
-        <h2>Run Task</h2>
+        <h2>任务执行</h2>
         <div style="margin-bottom: 20px;">
             <textarea id="task-goal" style="width: 100%; height: 60px; border-radius: 4px; border: 1px solid #e2e8f0; padding: 8px; box-sizing: border-box; font-family: inherit;" placeholder="Enter task goal..."></textarea>
             <div style="margin-top: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; color: #475569;">
-                <label for="task-profile-select" style="font-weight: 600;">Agent Architecture:</label>
+                <label for="task-profile-select" style="font-weight: 600;">智能体架构：</label>
                 <select id="task-profile-select" style="padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e0; font-size: 0.85rem; background-color: #f8fafc; color: #334155; outline: none; cursor: pointer; flex: 1; margin-left: 10px;">
-                    <option value="flash">⚡ Flash (Reactive Fast Loop)</option>
-                    <option value="pro">🚀 Pro (Multi-Agent Cognitive Graph)</option>
+                    <option value="flash">⚡ Flash · 快速反应环</option>
+                    <option value="pro">🚀 Pro · 多智能体认知图</option>
                 </select>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="refresh-btn" style="flex: 1; margin-bottom: 0;" onclick="runTask()">Run Task</button>
-                <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #e53e3e;" onclick="stopTask()">Stop Task</button>
+                <button class="refresh-btn" style="flex: 1; margin-bottom: 0;" onclick="runTask()">▶ 执行任务</button>
+                <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #e53e3e;" onclick="stopTask()">■ 停止任务</button>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="refresh-btn" id="resume-btn" style="flex: 1; margin-bottom: 0; background-color: #38a169; display: none;" onclick="resumeTask()">Resume Task</button>
+                <button class="refresh-btn" id="resume-btn" style="flex: 1; margin-bottom: 0; background-color: #38a169; display: none;" onclick="resumeTask()">恢复任务</button>
             </div>
             <div id="run-status" style="font-size: 0.85rem; margin-top: 5px;"></div>
         </div>
-        <h2>Sessions</h2>
+        <h2>用例中心 <span id="case-count" style="font-size: 0.8rem; color: #718096; font-weight: 400;">(0)</span></h2>
+        <div style="margin-bottom: 10px;">
+            <input type="file" id="case-file-input" accept=".xlsx,.csv" style="display:none" onchange="importCases()">
+            <div style="display: flex; gap: 8px;">
+                <button class="refresh-btn" style="flex: 1; margin-bottom: 0;" onclick="document.getElementById('case-file-input').click()">📥 导入 xlsx/csv</button>
+                <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #805ad5;" onclick="downloadCaseTemplate()">模板</button>
+            </div>
+            <div id="case-import-status" style="font-size: 0.8rem; margin-top: 4px;"></div>
+        </div>
+        <div style="max-height: 200px; overflow-y: auto; margin-bottom: 8px; border: 1px solid #e2e8f0; border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;" id="case-table"></table>
+        </div>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <select id="case-profile-select" style="flex: 1; padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e0; font-size: 0.85rem; background-color: white;">
+                <option value="pro" selected>🚀 Pro · 严格校验</option>
+                <option value="flash">⚡ Flash · 快速</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #3182ce;" onclick="runCaseBatch()">▶ 批量执行</button>
+            <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #805ad5;" onclick="exportCaseResults()">导出结果</button>
+        </div>
+        <div id="case-batch-status" style="font-size: 0.8rem; margin-bottom: 12px;"></div>
+        <h2>会话</h2>
         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <button class="refresh-btn" style="flex: 1; margin-bottom: 0;" onclick="loadSessions()">Refresh List</button>
-            <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #e53e3e;" onclick="cleanupHistory()">Clean History</button>
+            <button class="refresh-btn" style="flex: 1; margin-bottom: 0;" onclick="loadSessions()">刷新列表</button>
+            <button class="refresh-btn" style="flex: 1; margin-bottom: 0; background-color: #e53e3e;" onclick="cleanupHistory()">清理历史</button>
         </div>
         <div style="margin-bottom: 15px;">
             <input type="text" id="session-search-input" oninput="filterSessionsList()" placeholder="🔍 Filter by Session ID or Goal..." style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 0.85rem; box-sizing: border-box; outline: none; background-color: #fff; color: #1e293b; transition: border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#3182ce'; this.style.boxShadow='0 0 0 2px rgba(49,130,206,0.2)';" onblur="this.style.borderColor='#cbd5e0'; this.style.boxShadow='none';"/>
@@ -271,7 +377,7 @@
             <div style="display: flex; align-items: flex-start; gap: 15px; flex: 1;">
                 <button onclick="toggleSidebar()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; color: #4a5568; margin-top: 5px;" title="Toggle Sidebar">☰</button>
                 <div id="session-header" style="flex: 1;">
-                    <h1 style="margin-top: 0;">Select a session from the sidebar</h1>
+                    <h1 style="margin-top: 0;">请从侧边栏选择一个会话</h1>
                 </div>
             </div>
 
@@ -279,13 +385,13 @@
         
         <!-- Tab Navigation Bar -->
         <div id="session-tabs-bar" style="display: none; gap: 8px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; margin-bottom: 15px; align-items: center;">
-            <button class="tab-btn active" onclick="switchTab('steps')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; border-bottom: 2px solid #3182ce; color: #3182ce; transition: color 0.2s, border-color 0.2s; outline: none;">👣 Steps Timeline</button>
-            <button class="tab-btn" onclick="switchTab('traces')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; color: #718096; transition: color 0.2s, border-color 0.2s; outline: none;">🌳 Traces Tree</button>
-            <button class="tab-btn" onclick="switchTab('replay')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; color: #718096; transition: color 0.2s, border-color 0.2s; outline: none;">🔄 Step Replay</button>
+            <button class="tab-btn active" onclick="switchTab('steps')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; border-bottom: 2px solid #3182ce; color: #3182ce; transition: color 0.2s, border-color 0.2s; outline: none;">👣 步骤时间线</button>
+            <button class="tab-btn" onclick="switchTab('traces')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; color: #718096; transition: color 0.2s, border-color 0.2s; outline: none;">🌳 轨迹树</button>
+            <button class="tab-btn" onclick="switchTab('replay')" style="padding: 8px 16px; border: none; background: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; color: #718096; transition: color 0.2s, border-color 0.2s; outline: none;">🔄 步骤回放</button>
             
             <div style="margin-left: auto; display: flex; gap: 8px;">
-                <button class="refresh-btn" style="margin-bottom: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="openNotesModal()">📚 View All Notes</button>
-                <button class="refresh-btn" style="margin-bottom: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="openPlanModal()">📋 View Task Plan</button>
+                <button class="refresh-btn" style="margin-bottom: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="openNotesModal()">📚 查看全部笔记</button>
+                <button class="refresh-btn" style="margin-bottom: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="openPlanModal()">📋 查看任务计划</button>
             </div>
         </div>
         
@@ -312,7 +418,7 @@
             <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); margin-bottom: 20px; flex-shrink: 0;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="font-size: 1.25rem;">🔄</span>
-                    <h2 style="margin: 0; font-size: 1.1rem; color: #0f172a; font-weight: 700;">Interactive Step Replay Timeline</h2>
+                    <h2 style="margin: 0; font-size: 1.1rem; color: #0f172a; font-weight: 700;">交互式步骤回放时间线</h2>
                 </div>
             </div>
 
@@ -332,14 +438,14 @@
     <div id="plan-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center;">
         <div style="background-color: #1e293b; color: #f8fafc; width: 700px; max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #334155;">
             <div style="padding: 16px 24px; background-color: #0f172a; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; color: #38bdf8; font-size: 1.25rem; font-weight: 600;">📋 Active Task Plan</h2>
+                <h2 style="margin: 0; color: #38bdf8; font-size: 1.25rem; font-weight: 600;">📋 当前任务计划</h2>
                 <button onclick="closePlanModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
             </div>
             <div style="padding: 24px; overflow-y: auto; flex: 1;">
                 <pre id="plan-modal-content" style="margin: 0; background-color: #0f172a; padding: 16px; border-radius: 8px; color: #e2e8f0; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; white-space: pre-wrap;">Loading task plan...</pre>
             </div>
             <div style="padding: 12px 24px; background-color: #0f172a; border-top: 1px solid #334155; text-align: right;">
-                <button class="refresh-btn" style="margin: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="fetchTaskPlan()">Refresh Plan</button>
+                <button class="refresh-btn" style="margin: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="fetchTaskPlan()">刷新计划</button>
             </div>
         </div>
     </div>
@@ -348,14 +454,14 @@
     <div id="notes-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center;">
         <div style="background-color: #1e293b; color: #f8fafc; width: 800px; max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #334155;">
             <div style="padding: 16px 24px; background-color: #0f172a; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; color: #38bdf8; font-size: 1.25rem; font-weight: 600;">📚 All Notes</h2>
+                <h2 style="margin: 0; color: #38bdf8; font-size: 1.25rem; font-weight: 600;">📚 全部笔记</h2>
                 <button onclick="closeNotesModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
             </div>
             <div style="padding: 24px; overflow-y: auto; flex: 1;" id="notes-modal-content">
                 Loading notes...
             </div>
             <div style="padding: 12px 24px; background-color: #0f172a; border-top: 1px solid #334155; text-align: right;">
-                <button class="refresh-btn" style="margin: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="fetchAllNotes()">Refresh Notes</button>
+                <button class="refresh-btn" style="margin: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;" onclick="fetchAllNotes()">刷新笔记</button>
             </div>
         </div>
     </div>
@@ -770,7 +876,7 @@
 
         async function reloadSessionVideo() {
             if (!currentSessionId) {
-                alert("Please select a session first.");
+                alert("请先选择一个会话");
                 return;
             }
             try {
@@ -1162,7 +1268,7 @@
                         currentSessionId = null;
                         updateMiniVideoPlayer(null);
 
-                        document.getElementById('session-header').innerHTML = '<h1>Select a session from the sidebar</h1>';
+                        document.getElementById('session-header').innerHTML = '<h1>请从侧边栏选择一个会话</h1>';
                         document.getElementById('session-tabs-bar').style.display = 'none';
                         document.getElementById('steps-container').style.display = 'none';
                         document.getElementById('traces-container-wrapper').style.display = 'none';
@@ -1175,7 +1281,7 @@
                     loadSessions();
                 } else {
                     const data = await res.json();
-                    alert(`Failed to delete session: ${data.detail || 'Unknown error'}`);
+                    alert(`删除会话失败：${data.detail || '未知错误'}`);
                 }
             } catch (err) {
                 alert(`Error: ${err.message}`);
@@ -1593,7 +1699,7 @@
                 replaySteps = await res.json();
                 
                 if (replaySteps.length === 0) {
-                    container.innerHTML = '<div style="padding: 40px; color: #718096; text-align: center; font-size: 1.1rem;">🔄 No steps recorded yet for this session.</div>';
+                    container.innerHTML = '<div style="padding: 40px; color: #718096; text-align: center; font-size: 1.1rem;">🔄 此会话暂无步骤记录。</div>';
                     return;
                 }
                 
@@ -1749,9 +1855,9 @@
                             <!-- 2. Replay Configuration & Parameters -->
                             <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.01);">
                                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">
-                                    <h4 style="margin: 0; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: none; padding-bottom: 0;">⚙️ Replay Configuration</h4>
+                                    <h4 style="margin: 0; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: none; padding-bottom: 0;">⚙️ 回放配置</h4>
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <label for="replay-tool-select-${stepNum}" style="font-size: 0.82rem; font-weight: 600; color: #475569;">Tool for Replay:</label>
+                                        <label for="replay-tool-select-${stepNum}" style="font-size: 0.82rem; font-weight: 600; color: #475569;">回放工具：</label>
                                         <select id="replay-tool-select-${stepNum}" onchange="changeReplayTool(${stepNum})" style="padding: 4px 10px; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 0.8rem; background-color: white; color: #334155; outline: none; cursor: pointer; font-family: inherit;">
                                             <!-- Tool options dynamically populated -->
                                         </select>
@@ -2024,14 +2130,14 @@
                             if (traceDetails.type === 'thinking' && traceDetails.payload) {
                                 detailsContainer.innerHTML = `
                                     <div class="thinking-box native" style="background-color: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 6px; padding: 12px 15px; border: 1px solid #dcfce7; border-left-width: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); margin-bottom: 0;">
-                                        <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">🧠 Operator Native Thinking</h4>
+                                        <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">🧠 操作器原生思考</h4>
                                         <div style="white-space: pre-wrap; font-size: 0.88rem; color: #1f2937; line-height: 1.6; font-family: inherit;">${escapeHtml(traceDetails.payload.thought)}</div>
                                     </div>
                                 `;
                             } else if (traceDetails.type === 'raw_thinking' && traceDetails.payload) {
                                 detailsContainer.innerHTML = `
                                     <div class="thinking-box raw" style="background-color: #f8fafc; border-left: 4px solid #475569; border-radius: 6px; padding: 12px 15px; border: 1px solid #e2e8f0; border-left-width: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); margin-bottom: 0;">
-                                        <h4 style="margin: 0 0 6px 0; color: #475569; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">📝 Operator Raw Thinking / Plan</h4>
+                                        <h4 style="margin: 0 0 6px 0; color: #475569; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">📝 操作器原始思考 / 计划</h4>
                                         <div style="white-space: pre-wrap; font-size: 0.88rem; color: #374151; line-height: 1.6; font-family: inherit;">${escapeHtml(traceDetails.payload.thought)}</div>
                                     </div>
                                 `;
@@ -2412,7 +2518,7 @@
             if (payload.error) {
                 html += `
                     <div style="background-color: #fef2f2; border: 1px solid #fee2e2; border-left: 4px solid #ef4444; border-radius: 6px; padding: 15px; margin-bottom: 15px;">
-                        <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: bold; font-size: 0.85rem; text-transform: uppercase;">❌ LLM Error</h4>
+                        <h4 style="margin: 0 0 8px 0; color: #ef4444; font-weight: bold; font-size: 0.85rem; text-transform: uppercase;">❌ LLM 错误</h4>
                         <pre class="light-code" style="margin: 0; font-size: 0.85rem; color: #991b1b; font-family: monospace; white-space: pre-wrap;">${escapeHtml(payload.error)}</pre>
                     </div>
                 `;
@@ -2559,7 +2665,7 @@
             if (payload.args) {
                 html += `
                     <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; border-left: 4px solid #64748b; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        <h4 style="margin: 0 0 6px 0; color: #475569; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🔧 Tool Arguments</h4>
+                        <h4 style="margin: 0 0 6px 0; color: #475569; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🔧 工具参数</h4>
                         <pre class="light-code" style="margin: 0; font-size: 0.82rem; color: #334155; font-family: monospace; white-space: pre-wrap; line-height: 1.4;">${escapeHtml(JSON.stringify(payload.args, null, 2))}</pre>
                     </div>
                 `;
@@ -2569,7 +2675,7 @@
                 const resultText = typeof payload.result === 'object' ? JSON.stringify(payload.result, null, 2) : String(payload.result);
                 html += `
                     <div style="background-color: #f0fdf4; border: 1px solid #dcfce7; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; border-left: 4px solid #16a34a; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🟢 Tool Result</h4>
+                        <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🟢 工具结果</h4>
                         <pre class="light-code" style="margin: 0; font-size: 0.82rem; color: #14532d; font-family: monospace; white-space: pre-wrap; line-height: 1.4;">${escapeHtml(resultText)}</pre>
                     </div>
                 `;
@@ -2578,7 +2684,7 @@
             if (payload.error) {
                 html += `
                     <div style="background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 6px; padding: 12px 15px; margin-bottom: 12px; border-left: 4px solid #ef4444; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        <h4 style="margin: 0 0 6px 0; color: #ef4444; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🔴 Tool Error</h4>
+                        <h4 style="margin: 0 0 6px 0; color: #ef4444; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">🔴 工具错误</h4>
                         <pre class="light-code" style="margin: 0; font-size: 0.82rem; color: #991b1b; font-family: monospace; white-space: pre-wrap; line-height: 1.4;">${escapeHtml(payload.error)}</pre>
                     </div>
                 `;
@@ -2622,7 +2728,7 @@
                 const steps = await res.json();
                 
                 if (steps.length === 0) {
-                    container.innerHTML = '<div style="padding: 40px; color: #718096; text-align: center; font-size: 1.1rem;">👣 No steps recorded yet for this session.</div>';
+                    container.innerHTML = '<div style="padding: 40px; color: #718096; text-align: center; font-size: 1.1rem;">👣 此会话暂无步骤记录。</div>';
                     return;
                 }
                 
@@ -2696,7 +2802,7 @@
                     if (step.action_taken) {
                         contentHtml += `
                             <div style="background-color: #eff6ff; border: 1px solid #dbeafe; border-radius: 6px; padding: 12px 15px; border-left: 4px solid #2563eb;">
-                                <h4 style="margin: 0 0 6px 0; color: #1d4ed8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Action Executed</h4>
+                                <h4 style="margin: 0 0 6px 0; color: #1d4ed8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">⚡ 动作已执行</h4>
                                 <pre class="light-code" style="margin: 0; font-size: 0.82rem; color: #1e3a8a; font-family: monospace; white-space: pre-wrap; line-height: 1.4;">${escapeHtml(JSON.stringify(step.action_taken, null, 2))}</pre>
                             </div>
                         `;
@@ -2710,7 +2816,7 @@
                         
                         contentHtml += `
                             <div style="background-color: ${resBg}; border: 1px solid ${resBorder}; border-radius: 6px; padding: 12px 15px; border-left: 4px solid ${resColor};">
-                                <h4 style="margin: 0 0 6px 0; color: ${resColor}; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">✓ Execution/Validation Result</h4>
+                                <h4 style="margin: 0 0 6px 0; color: ${resColor}; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">✓ 执行 / 校验结果</h4>
                                 <pre class="light-code" style="margin: 0; font-size: 0.82rem; color: ${isSuccess ? '#14532d' : '#7f1d1d'}; font-family: monospace; white-space: pre-wrap; line-height: 1.4;">${escapeHtml(JSON.stringify(step.last_execution_result, null, 2))}</pre>
                             </div>
                         `;
@@ -2772,7 +2878,7 @@
                                         🔍 Click to inspect Step Details & Sub-Traces
                                     </div>
                                     <div onclick="event.stopPropagation();" style="display: flex; align-items: center; gap: 6px; font-weight: normal;">
-                                        <label for="trace-filter-${escapeHtml(step.step_id)}" style="font-size: 0.75rem; color: #64748b;">Trace Type:</label>
+                                        <label for="trace-filter-${escapeHtml(step.step_id)}" style="font-size: 0.75rem; color: #64748b;">轨迹类型：</label>
                                         <select id="trace-filter-${escapeHtml(step.step_id)}" onchange="filterStepTraces('${escapeHtml(step.step_id)}', this.value)" onclick="event.stopPropagation();" style="font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1; background: white; color: #334155; cursor: pointer; outline: none; font-weight: 500;">
                                             <option value="all">All</option>
                                         </select>
@@ -3145,7 +3251,7 @@
                 streamLabel.style.display = 'flex';
                 streamLabel.style.alignItems = 'center';
                 streamLabel.style.justifyContent = 'space-between';
-                streamLabel.innerHTML = `<span>LLM Output Stream</span><span style="color: #4299e1;">● Live</span>`;
+                streamLabel.innerHTML = `<span>LLM 输出流</span><span style="color: #4299e1;">● 实时</span>`;
                 streamContainer.appendChild(streamLabel);
 
                 // 1. Thinking Process Block
@@ -3689,17 +3795,17 @@
                 const res = await fetch('/api/cleanup', { method: 'POST' });
                 const data = await res.json();
                 if (res.ok) {
-                    alert("Cleanup successful!");
+                    alert("清理成功！");
                     currentSessionId = null;
-                    document.getElementById('session-header').innerHTML = `<h1>Select a session from the sidebar</h1>`;
+                    document.getElementById('session-header').innerHTML = `<h1>请从侧边栏选择一个会话</h1>`;
                     document.getElementById('tree-container').innerHTML = '';
                     document.getElementById('details-container').innerHTML = '';
                     loadSessions();
                 } else {
-                    alert(`Cleanup failed: ${data.detail || 'Unknown error'}`);
+                    alert(`清理失败：${data.detail || '未知错误'}`);
                 }
             } catch (err) {
-                alert(`Error during cleanup: ${err.message}`);
+                alert(`清理出错：${err.message}`);
             }
         }
 
@@ -3718,8 +3824,8 @@
         <!-- Panel Body (expandable drawer) -->
         <div id="global-task-panel" style="max-height: 450px; overflow-y: auto; padding: 20px; border-bottom: 1px solid #2d3748; display: none; background-color: #111827;">
             <h3 style="color: #e2e8f0; margin-top: 0; margin-bottom: 15px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
-                <span class="pill" style="background-color: #d69e2e; color: #1a202c;">Async Tasks</span>
-                <span>Background Tasks Tracker</span>
+                <span class="pill" style="background-color: #d69e2e; color: #1a202c;">异步任务</span>
+                <span>后台任务追踪</span>
             </h3>
             <div id="background-tasks-list" style="display: flex; flex-direction: column; gap: 12px;">
                 <!-- Task items dynamically injected -->
@@ -3728,7 +3834,7 @@
         <!-- Header Bar -->
         <div id="global-task-bar" style="padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background-color: #1a202c; transition: background-color 0.2s;" onclick="toggleBackgroundTaskPanel()" onmouseover="this.style.backgroundColor='#2d3748'" onmouseout="this.style.backgroundColor='#1a202c'">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <span class="pill" style="background-color: #d69e2e; color: #1a202c;">Async Tasks</span>
+                <span class="pill" style="background-color: #d69e2e; color: #1a202c;">异步任务</span>
                 <span id="task-bar-text" style="font-family: monospace; color: #e2e8f0; font-size: 0.85rem;"></span>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -3765,7 +3871,7 @@
             </div>
             <div id="video-error-box" style="display: none; background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 20px 15px; border-radius: 8px; font-size: 0.9rem; text-align: center;">
                 <div style="font-size: 1.5rem; margin-bottom: 8px;">⚠️</div>
-                <strong style="display: block; margin-bottom: 4px;">No Recording Found</strong>
+                <strong style="display: block; margin-bottom: 4px;">未找到录屏</strong>
                 <div id="video-error-text" style="font-size: 0.8rem; color: #742a2a; line-height: 1.4;">
                     No video recording file was found for this session on disk or database records.
                 </div>
@@ -3782,6 +3888,168 @@
                 });
             }
         });
-    </script>
+    
+        // ================= Test Case Center (fork extension) =================
+        let casePollTimer = null;
+        let caseActiveBatch = null;
+
+        async function importCases() {
+            const input = document.getElementById('case-file-input');
+            const statusDiv = document.getElementById('case-import-status');
+            const file = input.files && input.files[0];
+            if (!file) return;
+            statusDiv.innerHTML = '<span style="color: #d69e2e;">导入中...</span>';
+            try {
+                const b64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const dataUrl = reader.result;
+                        resolve(dataUrl.substring(dataUrl.indexOf(',') + 1));
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+                const res = await fetch('/api/cases/import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: file.name, content_b64: b64 })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || '导入失败');
+                renderCaseTable(data.cases);
+                let warn = (data.warnings && data.warnings.length) ? ' <span style="color: #d69e2e;">(' + data.warnings.length + ' 条警告)</span>' : '';
+                statusDiv.innerHTML = '<span style="color: #38a169;">已导入 ' + data.count + ' 条用例</span>' + warn;
+            } catch (err) {
+                statusDiv.innerHTML = '<span style="color: #e53e3e;">' + escapeHtml(err.message) + '</span>';
+            }
+            input.value = '';
+        }
+
+        async function downloadCaseTemplate() {
+            const res = await fetch('/api/cases/template');
+            const blob = await res.blob();
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'test-cases-template.xlsx';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        function caseVerdictBadge(v) {
+            const styles = {
+                PASS: ['#c6f6d5', '#22543d'], FAIL: ['#fed7d7', '#742a2a'],
+                INCONCLUSIVE: ['#feebc8', '#7b341e'], ERROR: ['#e9d8fd', '#44337a'],
+                RUNNING: ['#bee3f8', '#2a4365'], QUEUED: ['#e2e8f0', '#4a5568'],
+                NOT_RUN: ['#edf2f7', '#718096']
+            };
+            const s = styles[v] || ['#e2e8f0', '#718096'];
+            return '<span style="display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: ' + s[0] + '; color: ' + s[1] + ';">' + (v || '—') + '</span>';
+        }
+
+        function renderCaseTable(cases) {
+            const table = document.getElementById('case-table');
+            document.getElementById('case-count').textContent = '(' + cases.length + ')';
+            if (!cases.length) { table.innerHTML = ''; return; }
+            let html = '<tr style="background: #f7fafc;">' +
+                ['编号', '标题', '模块', '优先级', '判定'].map(h => '<th style="padding: 4px 6px; text-align: left; border-bottom: 1px solid #e2e8f0;">' + h + '</th>').join('') + '</tr>';
+            for (const c of cases) {
+                html += '<tr>' +
+                    '<td style="padding: 3px 6px; border-bottom: 1px solid #edf2f7;">' + escapeHtml(c.case_id) + '</td>' +
+                    '<td style="padding: 3px 6px; border-bottom: 1px solid #edf2f7; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + escapeHtml(c.title) + '">' + escapeHtml(c.title) + '</td>' +
+                    '<td style="padding: 3px 6px; border-bottom: 1px solid #edf2f7;">' + escapeHtml(c.module || '') + '</td>' +
+                    '<td style="padding: 3px 6px; border-bottom: 1px solid #edf2f7;">' + escapeHtml(c.priority || '') + '</td>' +
+                    '<td id="case-verdict-' + escapeHtml(c.case_id) + '" style="padding: 3px 6px; border-bottom: 1px solid #edf2f7;">' + caseVerdictBadge(c.verdict) + '</td>' +
+                    '</tr>';
+            }
+            table.innerHTML = html;
+        }
+
+        async function runCaseBatch() {
+            const statusDiv = document.getElementById('case-batch-status');
+            const profile = document.getElementById('case-profile-select').value;
+            statusDiv.innerHTML = '<span style="color: #d69e2e;">正在提交批次...</span>';
+            try {
+                const res = await fetch('/api/cases/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profile: profile })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || '提交失败');
+                caseActiveBatch = data.batch_id;
+                renderBatchStatus(data);
+                startCasePolling();
+            } catch (err) {
+                statusDiv.innerHTML = '<span style="color: #e53e3e;">' + escapeHtml(err.message) + '</span>';
+            }
+        }
+
+        function renderBatchStatus(batch) {
+            const s = batch.summary || {};
+            const statusDiv = document.getElementById('case-batch-status');
+            statusDiv.innerHTML = '<span style="font-weight: 600;">' + escapeHtml(batch.batch_id) + '</span> · ' +
+                '<span style="color: #38a169;">PASS ' + (s.passed || 0) + '</span> / ' +
+                '<span style="color: #e53e3e;">FAIL ' + (s.failed || 0) + '</span> / ' +
+                '<span style="color: #d69e2e;">INCONCLUSIVE ' + (s.inconclusive || 0) + '</span> · ' +
+                '<span style="color: #718096;">进行中 ' + (s.running || 0) + '</span>';
+            for (const item of (batch.cases || [])) {
+                const td = document.getElementById('case-verdict-' + item.case_id);
+                if (td) td.innerHTML = caseVerdictBadge(item.verdict);
+            }
+        }
+
+        function startCasePolling() {
+            stopCasePolling();
+            casePollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/cases/batches/' + caseActiveBatch);
+                    const data = await res.json();
+                    renderBatchStatus(data);
+                    if (data.summary && data.summary.all_done) {
+                        stopCasePolling();
+                        document.getElementById('case-batch-status').innerHTML +=
+                            ' <span style="color: #38a169; font-weight: 700;">✔ 全部完成</span>';
+                    }
+                } catch (e) { /* transient; retry next tick */ }
+            }, 5000);
+        }
+
+        function stopCasePolling() {
+            if (casePollTimer) { clearInterval(casePollTimer); casePollTimer = null; }
+        }
+
+        async function exportCaseResults() {
+            const batchId = caseActiveBatch || '';
+            const res = await fetch('/api/cases/export?batch_id=' + encodeURIComponent(batchId));
+            if (!res.ok) {
+                const d = await res.json().catch(() => ({}));
+                alert(d.detail || '导出失败');
+                return;
+            }
+            const blob = await res.blob();
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'case-results.xlsx';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // Restore loaded workbook + latest batch on page load
+        (async function loadCaseCenter() {
+            try {
+                const res = await fetch('/api/cases/workbook');
+                const data = await res.json();
+                if (data.count) renderCaseTable(data.cases);
+                const br = await fetch('/api/cases/batches');
+                const batches = await br.json();
+                if (Array.isArray(batches) && batches.length) {
+                    const latest = batches[0];
+                    caseActiveBatch = latest.batch_id;
+                    renderBatchStatus(latest);
+                    if (!(latest.summary && latest.summary.all_done)) startCasePolling();
+                }
+            } catch (e) { /* console not ready yet */ }
+        })();
+</script>
 </body>
 </html>

@@ -37,7 +37,7 @@ limitations under the License.
           {{ agentService.recordingPlaybackStatus() === 'live' ? 'sensors' : (agentService.playerMode() === 'steps' ? 'slideshow' : (agentService.recordingPlaybackStatus() === 'processing' ? 'progress_activity' : 'smart_display')) }}
         </span>
         <span class="header-title" [title]="agentService.activeVideoTitle()">
-          {{ agentService.recordingPlaybackStatus() === 'live' ? 'Live Device Screen' : (agentService.playerMode() === 'steps' ? ('Step Replay (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? 'Preparing Recording' : (agentService.activeVideoTitle() || 'Screen Recording'))) }}
+          {{ agentService.recordingPlaybackStatus() === 'live' ? '设备实时画面' : (agentService.playerMode() === 'steps' ? ('分步回放 (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? 'Preparing Recording' : (agentService.activeVideoTitle() || 'Screen Recording'))) }}
         </span>
       </div>
       <div class="header-actions" (mousedown)="$event.stopPropagation()">
@@ -51,7 +51,7 @@ limitations under the License.
               title="Video Recording"
               >
               <span class="material-symbols-outlined mode-icon">videocam</span>
-              <span>Video</span>
+              <span>视频 </span>
             </button>
             <button
               class="mode-btn"
@@ -60,7 +60,7 @@ limitations under the License.
               title="Step Screenshot Replay"
               >
               <span class="material-symbols-outlined mode-icon">slideshow</span>
-              <span>Steps</span>
+              <span>步骤 </span>
             </button>
           </div>
         }
@@ -69,7 +69,7 @@ limitations under the License.
           class="header-btn"
           (click)="toggleMinimize()"
           [title]="agentService.isVideoMinimized() ? 'Restore' : 'Minimize'"
-          aria-label="Minimize"
+          aria-label="最小化"
           >
           <span class="material-symbols-outlined">{{ agentService.isVideoMinimized() ? 'expand_less' : 'remove' }}</span>
         </button>
@@ -79,7 +79,7 @@ limitations under the License.
             class="header-btn"
             (click)="toggleTheater()"
             [title]="isTheaterMode() ? 'Exit Theater' : 'Theater Mode'"
-            aria-label="Theater"
+            aria-label="影院模式"
             >
             <span class="material-symbols-outlined">{{ isTheaterMode() ? 'close_fullscreen' : 'open_in_full' }}</span>
           </button>
@@ -88,8 +88,8 @@ limitations under the License.
         <button
           class="header-btn close-btn"
           (click)="agentService.closeVideoPlayer()"
-          title="Close"
-          aria-label="Close"
+          title="关闭"
+          aria-label="关闭"
           >
           <span class="material-symbols-outlined">close</span>
         </button>
@@ -106,12 +106,12 @@ limitations under the License.
                 class="live-screen-img"
                 [src]="liveStreamUrl()"
                 (error)="onLiveStreamError()"
-                alt="Live Device Screen"
+                alt="设备实时画面"
                 />
                 <div class="live-status-overlay">
                   <div class="live-badge">
                     <span class="pulse-dot"></span>
-                    <span>LIVE</span>
+                    <span>实时 </span>
                   </div>
                   <button class="live-refresh-btn" (click)="retryLiveStream()" title="Refresh Live Stream">
                     <span class="material-symbols-outlined">refresh</span>
@@ -124,8 +124,8 @@ limitations under the License.
                 <div class="fallback-icon-wrap">
                   <span class="material-symbols-outlined fallback-icon">phonelink_off</span>
                 </div>
-                <h4 class="fallback-title">Device Stream Connecting</h4>
-                <p class="fallback-desc">Waiting for ADB device screen stream...</p>
+                <h4 class="fallback-title">设备画面连接中 </h4>
+                <p class="fallback-desc">等待 ADB 设备画面流... </p>
                 <button class="retry-btn" (click)="retryLiveStream()">
                   <span class="material-symbols-outlined">refresh</span> Reconnect
                 </button>
@@ -161,7 +161,7 @@ limitations under the License.
                   @if (isStepImageLoading()) {
                     <div class="step-image-loading-state">
                       <span class="material-symbols-outlined spinning-icon">progress_activity</span>
-                      <span>Loading screenshot...</span>
+                      <span>加载截图中... </span>
                     </div>
                   }
                   <!-- Error / Missing Image Fallback -->
