@@ -62,7 +62,7 @@ limitations under the License.
       </div>
       @if (activeQueue().length === 0) {
         <div class="empty-section-placeholder">
-          No active or queued tasks.
+          当前没有执行中或排队的任务。
         </div>
       }
       @for (session of activeQueue(); track trackSession($index, session)) {
@@ -132,7 +132,7 @@ limitations under the License.
         <div class="history-list-wrapper">
           @if (historyTasks().length === 0) {
             <div class="empty-section-placeholder">
-              No past tasks.
+              暂无历史任务。
             </div>
           }
           @for (session of historyTasks(); track trackSession($index, session)) {
@@ -213,7 +213,7 @@ limitations under the License.
               <span class="material-symbols-outlined">description</span>
             </div>
             <h4 class="empty-notes-title">暂无笔记与计划 </h4>
-            <p class="empty-notes-subtitle">No notes or structured plans were recorded for this session.</p>
+            <p class="empty-notes-subtitle">本会话未记录笔记或结构化计划。</p>
           </div>
         }
         <!-- Notes Content Viewer (Clean card blocks matching the second screenshot style) -->

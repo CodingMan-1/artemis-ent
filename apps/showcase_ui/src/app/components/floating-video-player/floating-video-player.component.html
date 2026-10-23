@@ -37,7 +37,7 @@ limitations under the License.
           {{ agentService.recordingPlaybackStatus() === 'live' ? 'sensors' : (agentService.playerMode() === 'steps' ? 'slideshow' : (agentService.recordingPlaybackStatus() === 'processing' ? 'progress_activity' : 'smart_display')) }}
         </span>
         <span class="header-title" [title]="agentService.activeVideoTitle()">
-          {{ agentService.recordingPlaybackStatus() === 'live' ? '设备实时画面' : (agentService.playerMode() === 'steps' ? ('分步回放 (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? 'Preparing Recording' : (agentService.activeVideoTitle() || 'Screen Recording'))) }}
+          {{ agentService.recordingPlaybackStatus() === 'live' ? '设备实时画面' : (agentService.playerMode() === 'steps' ? ('分步回放 (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? '正在准备录像' : (agentService.activeVideoTitle() || 'Screen Recording'))) }}
         </span>
       </div>
       <div class="header-actions" (mousedown)="$event.stopPropagation()">
@@ -48,7 +48,7 @@ limitations under the License.
               class="mode-btn"
               [class.active]="agentService.playerMode() === 'video'"
               (click)="agentService.setPlayerMode('video')"
-              title="Video Recording"
+              title="录像回放"
               >
               <span class="material-symbols-outlined mode-icon">videocam</span>
               <span>视频 </span>
@@ -57,7 +57,7 @@ limitations under the License.
               class="mode-btn"
               [class.active]="agentService.playerMode() === 'steps'"
               (click)="agentService.setPlayerMode('steps')"
-              title="Step Screenshot Replay"
+              title="分步截图回放"
               >
               <span class="material-symbols-outlined mode-icon">slideshow</span>
               <span>步骤 </span>
@@ -113,7 +113,7 @@ limitations under the License.
                     <span class="pulse-dot"></span>
                     <span>实时 </span>
                   </div>
-                  <button class="live-refresh-btn" (click)="retryLiveStream()" title="Refresh Live Stream">
+                  <button class="live-refresh-btn" (click)="retryLiveStream()" title="刷新实时画面">
                     <span class="material-symbols-outlined">refresh</span>
                   </button>
                 </div>
@@ -127,7 +127,7 @@ limitations under the License.
                 <h4 class="fallback-title">设备画面连接中 </h4>
                 <p class="fallback-desc">等待 ADB 设备画面流... </p>
                 <button class="retry-btn" (click)="retryLiveStream()">
-                  <span class="material-symbols-outlined">refresh</span> Reconnect
+                  <span class="material-symbols-outlined">refresh</span> 重新连接
                 </button>
               </div>
             }
@@ -138,7 +138,7 @@ limitations under the License.
             @if (agentService.playerMode() === 'video' && (agentService.recordingPlaybackStatus() === 'processing' || agentService.isVideoLoading())) {
               <div class="video-loading-state">
                 <span class="material-symbols-outlined spinning-icon">progress_activity</span>
-                <span>{{ agentService.recordingPlaybackMessage() || 'Preparing screen recording...' }}</span>
+                <span>{{ agentService.recordingPlaybackMessage() || '正在准备屏幕录像...' }}</span>
               </div>
             }
             <!-- Option A: STEP REPLAY VIEW (ACTIVE IN STEP MODE) -->
@@ -148,7 +148,7 @@ limitations under the License.
                 @if (agentService.recordingPlaybackStatus() === 'failed' || videoLoadError()) {
                   <div class="step-replay-notice">
                     <span class="material-symbols-outlined notice-icon">info</span>
-                    <span>Screen recording unavailable. Replaying step-by-step screenshots.</span>
+                    <span>屏幕录像不可用，改用分步截图回放。</span>
                   </div>
                 }
                 <!-- Step Image Viewport with Action Coordinates Overlay -->
@@ -168,7 +168,7 @@ limitations under the License.
                   @if (stepImageError() && !isStepImageLoading()) {
                     <div class="step-image-error-state">
                       <span class="material-symbols-outlined broken-icon">broken_image</span>
-                      <span>Screenshot preview unavailable for this step</span>
+                      <span>此步骤截图预览不可用</span>
                     </div>
                   }
                   <!-- Device Screen Frame & Action Coordinates Overlay -->
@@ -182,7 +182,7 @@ limitations under the License.
                         (load)="onStepImageLoad()"
                         (error)="onStepImageError()"
                         (click)="openImageInNewTab()"
-                        title="Click to view image in new tab"
+                        title="点击在新标签页查看图片"
                         />
                         <!-- Action Visual Coordinates Overlay (Touch point, swipe arrow, sequence path) -->
                         <div
@@ -218,17 +218,17 @@ limitations under the License.
                                 class="toggle-btn"
                                 [class.active]="viewMode() === 'pre'"
                                 (click)="setStepViewMode('pre', $event)"
-                                title="View screen before action (with touch coordinates)"
+                                title="查看动作前屏幕（含触摸坐标）"
                                 >
-                                Pre
+                                前
                               </button>
                               <button
                                 class="toggle-btn"
                                 [class.active]="viewMode() === 'post'"
                                 (click)="setStepViewMode('post', $event)"
-                                title="View resulting screen after action executed"
+                                title="查看动作执行后的屏幕"
                                 >
-                                Post
+                                后
                               </button>
                             </div>
                           }
@@ -283,15 +283,15 @@ limitations under the License.
                             <span class="material-symbols-outlined">{{ isStepPlaying() ? 'pause' : 'play_arrow' }}</span>
                           </button>
                           <!-- Previous Frame Button -->
-                          <button class="ctrl-btn" (click)="prevStepFrame()" [disabled]="activeStepIndex() <= 0" title="Previous Step">
+                          <button class="ctrl-btn" (click)="prevStepFrame()" [disabled]="activeStepIndex() <= 0" title="上一步">
                             <span class="material-symbols-outlined">skip_previous</span>
                           </button>
                           <!-- Next Frame Button -->
-                          <button class="ctrl-btn" (click)="nextStepFrame()" [disabled]="activeStepIndex() >= totalStepFrames() - 1" title="Next Step">
+                          <button class="ctrl-btn" (click)="nextStepFrame()" [disabled]="activeStepIndex() >= totalStepFrames() - 1" title="下一步">
                             <span class="material-symbols-outlined">skip_next</span>
                           </button>
                           <!-- Step Replay / Reset -->
-                          <button class="ctrl-btn" (click)="restartStep()" title="Replay from start">
+                          <button class="ctrl-btn" (click)="restartStep()" title="从头回放">
                             <span class="material-symbols-outlined">replay</span>
                           </button>
                           <!-- Step Counter Display -->
@@ -318,7 +318,7 @@ limitations under the License.
                             <span class="material-symbols-outlined">repeat</span>
                           </button>
                           <!-- Open in new tab -->
-                          <button class="ctrl-btn" (click)="openImageInNewTab()" title="Open image in new tab">
+                          <button class="ctrl-btn" (click)="openImageInNewTab()" title="在新标签页打开图片">
                             <span class="material-symbols-outlined">open_in_new</span>
                           </button>
                         </div>
@@ -368,7 +368,7 @@ limitations under the License.
                               <span class="material-symbols-outlined">{{ isPlaying() ? 'pause' : 'play_arrow' }}</span>
                             </button>
                             <!-- Replay / Reset -->
-                            <button class="ctrl-btn" (click)="restart()" title="Replay from start">
+                            <button class="ctrl-btn" (click)="restart()" title="从头回放">
                               <span class="material-symbols-outlined">replay</span>
                             </button>
                             <!-- Time Display -->
@@ -399,7 +399,7 @@ limitations under the License.
                               <span class="material-symbols-outlined">{{ isMuted() ? 'volume_off' : 'volume_up' }}</span>
                             </button>
                             <!-- Open in new tab -->
-                            <button class="ctrl-btn" (click)="openInNewTab()" title="Open video in new tab">
+                            <button class="ctrl-btn" (click)="openInNewTab()" title="在新标签页打开视频">
                               <span class="material-symbols-outlined">open_in_new</span>
                             </button>
                           </div>
@@ -414,14 +414,14 @@ limitations under the License.
                         <span class="material-symbols-outlined fallback-icon">videocam_off</span>
                       </div>
                       <h4 class="fallback-title">
-                        {{ agentService.recordingPlaybackStatus() === 'failed' || videoLoadError() ? 'Recording Playback Failed' : 'No Video Recording Available' }}
+                        {{ agentService.recordingPlaybackStatus() === 'failed' || videoLoadError() ? 'Recording Playback Failed' : 'No 录像回放 Available' }}
                       </h4>
                       <p class="fallback-desc">
                         {{ videoLoadError() ? 'The finalized recording could not be played.' : (agentService.recordingPlaybackMessage() || 'No screen recording was found for this task.') }}
                       </p>
                       @if (agentService.recordingPlaybackStatus() === 'failed' || videoLoadError()) {
                         <button class="retry-btn" (click)="videoLoadError.set(false); agentService.retryVideoRecording()">
-                          <span class="material-symbols-outlined">refresh</span> Retry
+                          <span class="material-symbols-outlined">refresh</span> 重试
                         </button>
                       }
                     </div>

@@ -1980,26 +1980,27 @@
         }
 
         
-    <!-- 企业工作台：实时推理流 / 任务队列 / 设备画面与回放 / 用例中心 -->
+    <!-- 企业工作台：设备画面与回放（主视图）/ 任务队列 / 用例中心 / 推理日志 -->
     <div class="wb-grid">
-      <section class="wb-card wb-stream-card">
-        <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">psychology</span> 实时推理流</div>
-        <app-agent-stream class="wb-agent-stream"></app-agent-stream>
+      <section class="wb-card wb-device-card">
+        <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">screenshot</span> 设备画面与回放</div>
+        <div class="wb-card-sub">实时设备画面 · 录像回放 · 分步截图回放</div>
+        <app-floating-video-player class="wb-video"></app-floating-video-player>
       </section>
       <section class="wb-card wb-queue-card">
         <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">list_alt</span> 任务队列</div>
+        <div class="wb-card-sub">当前执行中的任务、进度与状态；历史任务可回溯</div>
         <app-chat-interface class="wb-chat"></app-chat-interface>
       </section>
-      <aside class="wb-rail">
-        <section class="wb-card wb-video-card">
-          <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">screenshot</span> 设备画面与回放</div>
-          <app-floating-video-player class="wb-video"></app-floating-video-player>
-        </section>
-        <section class="wb-card wb-case-card">
-          <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">table_view</span> 用例中心</div>
-          <app-case-panel></app-case-panel>
-        </section>
-      </aside>
+      <section class="wb-card wb-case-card">
+        <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">table_view</span> 用例中心</div>
+        <app-case-panel></app-case-panel>
+      </section>
+      <section class="wb-card wb-log-card">
+        <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">psychology</span> 推理日志（实时）</div>
+        <div class="wb-card-sub">动作感知 / 目标坐标 / 结构化总结，随执行滚动打印</div>
+        <app-agent-stream class="wb-agent-stream"></app-agent-stream>
+      </section>
     </div>
 
     <!-- Recommended Tasks Hub (Clean & Direct) -->

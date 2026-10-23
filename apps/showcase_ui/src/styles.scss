@@ -63,7 +63,11 @@ body {
 .smart-suggestions-container { display: none !important; }
 .wb-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(300px, 0.9fr);
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  grid-template-areas:
+    "device queue"
+    "case   case"
+    "log    log";
   gap: 16px;
   align-items: stretch;
   max-width: 1720px;
@@ -90,24 +94,32 @@ body {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.2px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: rgba(255, 255, 255, 0.92);
 }
+.wb-card-sub { font-size: 12.5px; color: rgba(255, 255, 255, 0.45); margin-bottom: 10px; }
 .wb-icon { font-size: 19px; opacity: 0.85; }
-.wb-rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.wb-rail .wb-card { min-height: 0; flex: 1; }
-.wb-agent-stream { flex: 1; overflow-y: auto; max-height: 640px; }
-.wb-chat { flex: 1; overflow-y: auto; max-height: 640px; }
-.wb-video { flex: 1; min-height: 200px; }
-.wb-video-card { max-height: 340px; }
-@media (max-width: 1280px) {
-  .wb-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
-  .wb-rail { grid-column: 1 / -1; flex-direction: row; }
-  .wb-rail .wb-card { flex: 1; }
+.wb-device-card { grid-area: device; min-height: 640px; }
+.wb-queue-card { grid-area: queue; min-height: 640px; }
+.wb-case-card { grid-area: case; }
+.wb-log-card {
+  grid-area: log;
+  background: rgba(8, 13, 26, 0.78);
+  border-color: rgba(56, 189, 248, 0.28);
 }
-@media (max-width: 860px) {
-  .wb-grid { grid-template-columns: 1fr; }
-  .wb-rail { flex-direction: column; }
+.wb-log-card .wb-card-title { color: #7dd3fc; }
+.wb-log-card .wb-icon { color: #38bdf8; opacity: 1; }
+.wb-log-card .agent-stream-container {
+  background: transparent;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12.5px;
+}
+.wb-agent-stream { flex: 1; overflow-y: auto; max-height: 400px; }
+.wb-chat { flex: 1; overflow-y: auto; max-height: 600px; }
+.wb-video { flex: 1; min-height: 560px; }
+@media (max-width: 1280px) {
+  .wb-grid { grid-template-columns: 1fr; grid-template-areas: "device" "queue" "case" "log"; }
+  .wb-device-card, .wb-queue-card { min-height: 480px; }
 }
 
 /* enterprise fork: 中文字体栈（不改变布局） */
