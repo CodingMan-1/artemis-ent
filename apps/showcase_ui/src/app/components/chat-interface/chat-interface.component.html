@@ -77,11 +77,11 @@ limitations under the License.
               @if (getTaskStatus(session) === 'running') {
                 <span class="status-dot"></span>
               }
-              {{ getTaskStatus(session) | uppercase }}
+              {{ statusLabel(getTaskStatus(session)) }}
             </span>
             <div class="task-card-header-actions">
               @if (getDeviceSerial(session)) {
-                <span class="task-device" [title]="'Device: ' + getDeviceSerial(session)">
+                <span class="task-device" [title]="'设备：' + getDeviceSerial(session)">
                   <span class="material-symbols-outlined device-icon">phone_android</span>
                   <span class="device-name">{{ getDeviceSerial(session) }}</span>
                 </span>
@@ -116,18 +116,18 @@ limitations under the License.
             </div>
           </div>
           <div class="task-goal" title="{{ session.initial_goal }}">
-            {{ session.initial_goal || 'Unnamed Task' }}
+            {{ session.initial_goal || '未命名任务' }}
           </div>
           <div class="task-card-footer">
-            <span class="task-id" [title]="session.session_id">ID: {{ session.session_id }}</span>
-            <span class="task-date">{{ session.start_time * 1000 | date:'MM/dd/yy' }}</span>
+            <span class="task-id" [title]="session.session_id">编号：{{ session.session_id }}</span>
+            <span class="task-date">{{ session.start_time * 1000 | date:'yyyy-MM-dd' }}</span>
           </div>
         </div>
       }
       <!-- Collapsible History Section -->
       <details class="history-section" open>
         <summary class="history-summary">
-          <span class="material-symbols-outlined section-icon">history</span> Past Runs & History ({{ historyTasks().length }})
+          <span class="material-symbols-outlined section-icon">history</span> 历史任务 ({{ historyTasks().length }})
         </summary>
         <div class="history-list-wrapper">
           @if (historyTasks().length === 0) {
@@ -147,11 +147,11 @@ limitations under the License.
                   @if (getTaskStatus(session) === 'running') {
                     <span class="status-dot"></span>
                   }
-                  {{ getTaskStatus(session) | uppercase }}
+                  {{ statusLabel(getTaskStatus(session)) }}
                 </span>
                 <div class="task-card-header-actions">
                   @if (getDeviceSerial(session)) {
-                    <span class="task-device" [title]="'Device: ' + getDeviceSerial(session)">
+                    <span class="task-device" [title]="'设备：' + getDeviceSerial(session)">
                       <span class="material-symbols-outlined device-icon">phone_android</span>
                       <span class="device-name">{{ getDeviceSerial(session) }}</span>
                     </span>
@@ -175,11 +175,11 @@ limitations under the License.
                 </div>
               </div>
               <div class="task-goal" title="{{ session.initial_goal }}">
-                {{ session.initial_goal || 'Unnamed Task' }}
+                {{ session.initial_goal || '未命名任务' }}
               </div>
               <div class="task-card-footer">
-                <span class="task-id" [title]="session.session_id">ID: {{ session.session_id }}</span>
-                <span class="task-date">{{ session.start_time * 1000 | date:'MM/dd/yy' }}</span>
+                <span class="task-id" [title]="session.session_id">编号：{{ session.session_id }}</span>
+                <span class="task-date">{{ session.start_time * 1000 | date:'yyyy-MM-dd' }}</span>
               </div>
             </div>
           }

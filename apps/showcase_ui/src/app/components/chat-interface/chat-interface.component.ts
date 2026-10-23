@@ -175,6 +175,23 @@ export class ChatInterfaceComponent {
   /**
    * Determine the current task execution status
    */
+    /** 中文状态徽章 */
+  statusLabel(status: string): string {
+    const map: Record<string, string> = {
+      running: "执行中",
+      paused: "已暂停",
+      completed: "已完成",
+      failed: "失败",
+      cancelled: "已取消",
+      canceled: "已取消",
+      pending: "待执行",
+      queued: "排队中",
+      stopped: "已停止",
+    };
+    return map[status] || status;
+  }
+
+  
   public getTaskStatus(session: Session): 'running' | 'paused' | 'completed' | 'pending' | 'failed' | 'cancelled' {
     if (session.status) {
       const s = session.status.toLowerCase();

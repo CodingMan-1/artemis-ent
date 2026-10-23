@@ -345,13 +345,17 @@ $text-light: #94a3b8;
   .home-content {
     position: relative;
     z-index: 5;
-    max-width: 960px;
+    max-width: 100%;
     width: 100%;
-    margin: 0 auto;
-    padding: 36px 24px 60px;
+    margin: 0;
+    padding: 36px 20px 40px;
+    min-height: 100vh;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 18px;
+
+    }
 
     /* Hero section */
     .hero-section {
@@ -4992,7 +4996,6 @@ $text-light: #94a3b8;
       }
     }
 
-  }
 }
 
 // =============================================================================
