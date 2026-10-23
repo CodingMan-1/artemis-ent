@@ -33,5 +33,29 @@
 </head>
 <body>
   <app-root></app-root>
+<script>
+(function () {
+  var box = null;
+  function show(title, detail) {
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'boot-watchdog';
+      box.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:999999;max-width:90vw;max-height:45vh;overflow:auto;background:#3a0d0d;color:#ffc9c9;border:1px solid #ff5c5c;border-radius:10px;padding:10px 12px;font:12px/1.5 Consolas,monospace;white-space:pre-wrap;box-shadow:0 6px 24px rgba(0,0,0,.5);';
+      document.documentElement.appendChild(box);
+    }
+    box.textContent += (title ? title + '\n' : '') + (detail || '') + '\n';
+    box.scrollTop = box.scrollHeight;
+  }
+  window.addEventListener('error', function (e) { show('JS ERROR', (e.message || 'script error') + (e.filename ? ' @' + e.filename + ':' + e.lineno : '')); });
+  window.addEventListener('unhandledrejection', function (e) { show('REJECTION', (e.reason && (e.reason.stack || e.reason.message || String(e.reason))) || ''); });
+  var t0 = Date.now();
+  setTimeout(function () {
+    var root = document.querySelector('app-root');
+    if (!root || root.innerHTML.trim().length === 0) {
+      show('BOOT-WATCHDOG', 'app-root 仍为空。scripts: ' + Array.prototype.map.call(document.scripts, function (s) { return (s.src && s.src.split('/').pop()) || '(inline)'; }).join(', '));
+    }
+  }, 12000);
+})();
+</script>
 </body>
 </html>
