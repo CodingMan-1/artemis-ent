@@ -348,24 +348,25 @@ $text-light: #94a3b8;
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 36px 20px 40px;
-    min-height: 100vh;
+    padding: 14px 20px 14px;
+    height: 100vh;
+    overflow: hidden;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 10px;
 
     }
 
     /* Hero section */
     .hero-section {
       text-align: center;
-      padding: 16px 0 6px;
+      padding: 2px 0 0;
       margin: 0;
 
       .hero-title {
         font-family: 'Outfit', 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        font-size: 32px;
+        font-size: 21px;
         font-weight: 600;
         letter-spacing: -0.035em;
         line-height: 1.2;
@@ -3790,7 +3791,9 @@ $text-light: #94a3b8;
     .task-launcher-view {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      min-height: 0;
+      overflow-y: auto;
       animation: fadeIn 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 
       .launcher-warning-bar {
@@ -3952,12 +3955,12 @@ $text-light: #94a3b8;
           display: flex;
           align-items: center;
           gap: 9px;
-          padding: 8px 12px;
+          padding: 5px 10px;
           border-radius: 9px;
           background: rgba(248, 250, 252, 0.75);
           border: 1px solid rgba(241, 245, 249, 0.95);
-          margin-top: 10px;
-          margin-bottom: 12px;
+          margin-top: 8px;
+          margin-bottom: 8px;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
           .descriptor-icon-wrap {
@@ -4209,7 +4212,7 @@ $text-light: #94a3b8;
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid rgba(226, 232, 240, 0.95);
         border-radius: 16px;
-        padding: 12px 18px 14px;
+        padding: 8px 14px 9px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 8px 24px -6px rgba(15, 23, 42, 0.04);
         display: flex;
         flex-direction: column;
@@ -4304,7 +4307,7 @@ $text-light: #94a3b8;
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid rgba(226, 232, 240, 0.95);
         border-radius: 16px;
-        padding: 12px 18px 14px;
+        padding: 8px 14px 9px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 8px 24px -6px rgba(15, 23, 42, 0.04);
         display: flex;
         flex-direction: column;

@@ -249,8 +249,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     return [
       {
         kind: 'verify',
-        name: 'Result check',
-        ends: ['Off', 'Strict'],
+        name: '结果校验',
+        ends: ['关闭', '严格'],
         ladder: VERIFICATION_LEVELS,
         index: vi,
         level: VERIFICATION_LEVELS[vi],
@@ -258,8 +258,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       {
         kind: 'explore',
-        name: 'Screen reading',
-        ends: ['Faster', 'Sharper'],
+        name: '画面识别',
+        ends: ['更快', '更准'],
         ladder: EXPLORER_MODES,
         index: ei,
         level: EXPLORER_MODES[ei],

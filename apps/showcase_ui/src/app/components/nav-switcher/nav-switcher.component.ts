@@ -29,21 +29,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         routerLinkActive="active" 
         [routerLinkActiveOptions]="{exact: true}"
         class="nav-tab-btn"
-        title="Return to Home Launcher to start a new task"
+        title="打开车机自动化工作台"
       >
         <span class="material-symbols-outlined tab-icon">add_task</span>
-        <span class="tab-label">新建 / 主页 </span>
+        <span class="tab-label">工作台 </span>
       </a>
-      <a 
-        routerLink="/workspace" 
-        routerLinkActive="active" 
-        class="nav-tab-btn"
-        title="打开工作区"
-      >
-        <span class="material-symbols-outlined tab-icon">space_dashboard</span>
-        <span class="tab-label">工作区 </span>
-      </a>
-    </nav>
+      </nav>
   `,
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./nav-switcher.component.scss']

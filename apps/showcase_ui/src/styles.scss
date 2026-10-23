@@ -63,11 +63,12 @@ body {
 .smart-suggestions-container { display: none !important; }
 .wb-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr) 132px;
   grid-template-areas:
-    "device queue"
-    "log    case";
+    "case   device"
+    "queue  device"
+    "log    log";
   gap: 14px;
   align-items: stretch;
   max-width: none;
@@ -75,7 +76,7 @@ body {
   margin: 0;
   padding: 0 8px 24px;
   flex: 1 1 auto;
-  min-height: 480px;
+  min-height: 0;
   box-sizing: border-box;
 }
 .wb-card {
@@ -103,7 +104,7 @@ body {
 }
 .wb-card-sub { font-size: 12px; color: rgba(255, 255, 255, 0.45); margin-bottom: 8px; flex: none; }
 .wb-icon { font-size: 19px; opacity: 0.85; }
-.wb-device-card { grid-area: device; }
+.wb-device-card { grid-area: device; min-width: 0; }
 .wb-queue-card { grid-area: queue; }
 .wb-case-card { grid-area: case; }
 .wb-log-card {

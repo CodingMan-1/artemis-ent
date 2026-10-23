@@ -32,7 +32,7 @@
     <!-- Task entry section -->
     <section class="hero-section">
       <h1 class="hero-title">
-        手机自动化工作台
+        车机自动化工作台
       </h1>
     </section>
 
@@ -1727,7 +1727,7 @@
               <div class="suggestion-left">
                 <span class="material-symbols-outlined sparkle-icon">auto_awesome</span>
                 <span class="suggestion-text">
-                  Continuous monitoring or complex task detected. Recommended: <strong>Pro Mode</strong>
+                  检测到持续监控或复杂任务，推荐：<strong>Pro 模式</strong>
                 </span>
               </div>
               <button type="button" class="btn-switch-pro" (click)="setProfile('pro')">
@@ -1742,10 +1742,10 @@
             <textarea
               id="task-input-field"
               class="composer-textarea"
-              rows="3"
+              rows="2"
               [(ngModel)]="taskGoal"
               [disabled]="isSubmitting()"
-              placeholder="描述你想在手机上完成的事（例如：打开 Gmail 搜索最新邮件）..."
+              placeholder="描述你想在车机上完成的事（例如：打开导航，搜索最近的服务区）..."
               (keydown.control.enter)="runTask()"
               (keydown.meta.enter)="runTask()"
             ></textarea>
@@ -1768,7 +1768,7 @@
                 <p class="desc-line">
                   <span class="mode-name">Pro</span>
                   <span class="bullet">·</span>
-                  <span>先规划、校验结果，点击被阻断时可自动恢复。支持 <strong>100+ 步</strong> 工作流与手机实时监控（<strong>15–40s</strong>/步）。</span>
+                  <span>先规划、校验结果，点击被阻断时可自动恢复。支持 <strong>100+ 步</strong> 工作流与车机实时监控（<strong>15–40s</strong>/步）。</span>
                 </p>
               }
             </div>
@@ -1812,7 +1812,7 @@
 
             <div class="bar-right">
               @if (taskGoal().length > 0) {
-                <span class="char-count">{{ taskGoal().length }} chars</span>
+                <span class="char-count">{{ taskGoal().length }} 字</span>
               }
 
               <!-- Run Button -->
@@ -1825,7 +1825,7 @@
                 (click)="runTask()"
               >
                 @if (isSubmitting()) {
-                  <span class="spinner"></span><span>Starting...</span>
+                  <span class="spinner"></span><span>启动中…</span>
                 } @else {
                   <span class="material-symbols-outlined run-icon">play_arrow</span><span>运行任务 </span>
                 }
@@ -1838,8 +1838,8 @@
         @if (selectedProfile() === 'pro') {
           <div class="pro-outputter-standalone-card">
             <div class="outputter-card-header">
-              <span class="outputter-title">预期输出 </span>
-              <span class="outputter-optional-tag">(Optional)</span>
+              <span class="outputter-title">预期输出</span>
+              <span class="outputter-optional-tag">（可选）</span>
             </div>
 
             <div class="outputter-input-wrapper">
@@ -1848,7 +1848,7 @@
                 class="outputter-standalone-input"
                 [ngModel]="expectedOutput()"
                 (ngModelChange)="expectedOutput.set($event)"
-                placeholder="Specify expected output or schema (e.g. 'Extract SMS verification code as JSON' or 'Summary of discounts and total price')..."
+                placeholder="描述预期输出或结果结构（例如：'以 JSON 提取短信验证码' 或 '列出可用优惠的摘要'）"
                 spellcheck="false"
               />
               @if (expectedOutput().trim()) {
@@ -1856,7 +1856,7 @@
                   type="button"
                   class="btn-clear-standalone"
                   (click)="expectedOutput.set('')"
-                  title="Clear expected output"
+                  title="清除预期输出"
                 >
                   <span class="material-symbols-outlined">close</span>
                 </button>
@@ -1981,7 +1981,8 @@
 
         
     <!-- 企业工作台：设备画面与回放（主视图）/ 任务队列 / 用例中心 / 推理日志 -->
-    <div class="wb-grid">
+    @if (activeTab() === 'launcher') {
+<div class="wb-grid">
       <section class="wb-card wb-device-card">
         <div class="wb-card-title"><span class="material-symbols-outlined wb-icon">screenshot</span> 设备画面与回放</div>
         <div class="wb-card-sub">实时设备画面 · 录像回放 · 分步截图回放</div>
@@ -2002,6 +2003,7 @@
         <app-agent-stream class="wb-agent-stream"></app-agent-stream>
       </section>
     </div>
+}
 
     <!-- Recommended Tasks Hub (Clean & Direct) -->
         <div class="smart-suggestions-container">

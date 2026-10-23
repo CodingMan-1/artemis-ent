@@ -44,89 +44,89 @@ export interface TuningLevel<TId extends string = string> {
 export const VERIFICATION_LEVELS: readonly TuningLevel<VerificationLevelId>[] = [
   {
     id: 'off',
-    label: 'Off',
-    tagline: 'No checking. The run ends as soon as the task looks done.',
-    latency: 'no extra time',
+    label: '关闭',
+    tagline: '不做任何检查，任务看起来完成即结束。',
+    latency: '不增加耗时',
     runs: [
-      'Each step is treated as finished the moment it is carried out.',
-      'You get the full action trace, but no pass / fail verdict.'
+      '每一步执行完即视为完成。',
+      '保留完整操作轨迹，但不给出通过/失败判定。'
     ],
-    skips: ['Nothing is double-checked and nothing is retried.'],
-    bestFor: 'Quick tries and demos, when you only want to watch what happens.'
+    skips: ['不复查、不重试。'],
+    bestFor: '快速尝试与演示，只想看过程、不要判定。'
   },
   {
     id: 'final',
-    label: 'At the end',
-    tagline: 'One check of the finished result against your goal. This is the default.',
-    latency: 'adds about 20–60 s at the end',
+    label: '结尾检查',
+    tagline: '任务结束后对照目标检查一次结果。这是默认档位。',
+    latency: '结尾增加约 20–60 秒',
     runs: [
-      'When the task finishes, the final screen, the step history and the device state are compared with what you asked for.',
-      'If the result does not match, the task goes back and tries to fix it, up to 3 times.'
+      '任务结束时，将最终画面、步骤历史与设备状态对照你的要求逐项检查。',
+      '结果不符时自动回退修复，最多重试 3 次。'
     ],
-    skips: ['Nothing is checked while the task is still running.'],
-    bestFor: 'Everyday tasks: an honest pass / fail without slowing the run down.'
+    skips: ['执行过程中不检查。'],
+    bestFor: '日常任务：不拖慢执行速度地拿到可靠的通过/失败结论。'
   },
   {
     id: 'checkpoints',
-    label: 'Every step',
-    tagline: 'Each step is checked as soon as it is done, plus the final check.',
-    latency: 'a short check after each step, done in the background',
+    label: '每步检查',
+    tagline: '每一步完成后立即检查，外加结尾检查。',
+    latency: '每步后台快速检查',
     runs: [
-      'Every step is checked right after it completes, using the screenshots from that moment.',
-      'If a step went wrong, it gets fixed before moving on (up to 2 tries per step).',
-      'A failed test condition is written down and the task keeps going.',
-      'The final check still runs at the end.'
+      '每步完成后立即用当时的截图检查。',
+      '某步出错会先修复再继续（每步最多 2 次）。',
+      '失败条件会被记录，任务继续执行。',
+      '结尾仍会执行最终检查。'
     ],
-    bestFor: 'Long tasks where one early mistake would spoil everything after it.'
+    bestFor: '长任务：前期一个错误会毁掉后续全部工作。'
   },
   {
     id: 'strict',
-    label: 'Strict',
-    tagline: 'Every step is checked, with more retries. The first failed test stops the run.',
-    latency: 'slowest: more checks and more retries',
+    label: '严格',
+    tagline: '每步都检查且重试更多；首个失败条件立即终止运行。',
+    latency: '最慢：检查与重试最多',
     runs: [
-      'Each check takes longer and gets more attempts: 4 fixes per step and 5 at the end.',
-      'The first failed test condition stops the run immediately, with the evidence attached.'
+      '每次检查耗时更长、尝试更多：每步修复 4 次、结尾 5 次。',
+      '首个失败条件立即终止运行，并附带证据。'
     ],
-    bestFor: 'Release checks and regression runs, where a wrong pass is never acceptable.'
+    bestFor: '发布检查与回归运行：绝不容忍误判通过。'
   }
 ];
 
 export const EXPLORER_MODES: readonly TuningLevel<ExplorerModeId>[] = [
   {
     id: 'flash',
-    label: 'Quick glance',
-    tagline: 'Finds buttons and text on the screen in a single look.',
-    latency: '1 look per search',
+    label: '快速一瞥',
+    tagline: '一次扫描即可找到屏幕上的按钮与文字。',
+    latency: '每次搜索 1 次扫描',
     runs: [
-      'Something on screen is asked for by name, icon or colour and its position comes back straight away.',
-      'Several things can be looked up at once.'
+      '按名称、图标或颜色询问屏幕元素，位置立即返回。',
+      '可同时查找多个元素。'
     ],
-    skips: ['No zooming in and no second try.'],
-    bestFor: 'Ordinary apps with clearly labelled buttons, icons and text.'
+    skips: ['不放大、不二次尝试。'],
+    bestFor: '按钮、图标、文字标注清晰的普通应用。'
   },
   {
     id: 'pro',
-    label: 'Second look',
-    tagline: 'Takes up to 3 looks, thinking in between, before answering.',
-    latency: 'up to 3 looks per search',
+    label: '反复确认',
+    tagline: '最多扫描 3 次，中间加入推理后再回答。',
+    latency: '每次搜索最多 3 次扫描',
     runs: [
-      'The screen layout is read first, then the picture is searched.',
-      'If the first try misses, a different approach is tried within the 3 looks.'
+      '先读取屏幕布局，再在画面中定位。',
+      '首次未命中会在 3 次扫描内换思路重试。'
     ],
-    skips: ['Still no zooming into small areas, to keep searches short.'],
-    bestFor: 'Things described by where they are ("the switch next to Wi-Fi") or with unclear labels.'
+    skips: ['仍不放大局部区域，保持搜索快速。'],
+    bestFor: '按位置描述的元素（“Wi-Fi 旁边的开关”）或标注不清的元素。'
   },
   {
     id: 'ultra',
-    label: 'Close-up',
-    tagline: 'Zooms into parts of the screen and takes up to 8 looks.',
-    latency: 'up to 8 looks per search (slowest)',
+    label: '局部放大',
+    tagline: '放大屏幕局部，最多扫描 8 次。',
+    latency: '每次搜索最多 8 次扫描（最慢）',
     runs: [
-      'Parts of the screen can be cropped and magnified to read tiny text and crowded layouts piece by piece.',
-      'Later looks reuse the earlier ones, so they cost less time than they sound.'
+      '可裁剪放大屏幕局部，逐块读取小字与拥挤布局。',
+      '后续扫描复用早前结果，实际耗时比听起来低。'
     ],
-    bestFor: 'Crowded screens, tiny targets, charts and drawings, and checks where exact placement matters.'
+    bestFor: '拥挤界面、极小目标、图表绘图，以及对位置精确度有要求的检查。'
   }
 ];
 
