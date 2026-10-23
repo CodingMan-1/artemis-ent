@@ -58,3 +58,57 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ================= enterprise fork: 工作台布局 ================= */
+.smart-suggestions-container { display: none !important; }
+.wb-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(300px, 0.9fr);
+  gap: 16px;
+  align-items: stretch;
+  max-width: 1720px;
+  margin: 8px auto 24px;
+  padding: 0 16px;
+  width: 100%;
+}
+.wb-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(20, 24, 34, 0.55);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+  padding: 14px 16px 16px;
+}
+.wb-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.92);
+}
+.wb-icon { font-size: 19px; opacity: 0.85; }
+.wb-rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.wb-rail .wb-card { min-height: 0; flex: 1; }
+.wb-agent-stream { flex: 1; overflow-y: auto; max-height: 640px; }
+.wb-chat { flex: 1; overflow-y: auto; max-height: 640px; }
+.wb-video { flex: 1; min-height: 200px; }
+.wb-video-card { max-height: 340px; }
+@media (max-width: 1280px) {
+  .wb-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .wb-rail { grid-column: 1 / -1; flex-direction: row; }
+  .wb-rail .wb-card { flex: 1; }
+}
+@media (max-width: 860px) {
+  .wb-grid { grid-template-columns: 1fr; }
+  .wb-rail { flex-direction: column; }
+}
+
+/* enterprise fork: 中文字体栈（不改变布局） */
+html { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, -apple-system, sans-serif; }

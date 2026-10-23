@@ -58,7 +58,7 @@ limitations under the License.
     @if (agentService.activeTab() === 'tasks') {
       <!-- Active Queue Section -->
       <div class="queue-section-header">
-        <span class="material-symbols-outlined section-icon">bolt</span> Active Queue ({{ activeQueue().length }})
+        <span class="material-symbols-outlined section-icon">bolt</span> 执行中队列 ({{ activeQueue().length }})
       </div>
       @if (activeQueue().length === 0) {
         <div class="empty-section-placeholder">
