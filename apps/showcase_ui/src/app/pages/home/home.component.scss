@@ -349,9 +349,13 @@ $text-light: #94a3b8;
     width: 100%;
     margin: 0;
     padding: 14px 20px 14px;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     box-sizing: border-box;
+
+    &.workbench-lock {
+      height: 100vh;
+      overflow: hidden;
+    }
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -5170,5 +5174,67 @@ $text-light: #94a3b8;
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ---- 工作台紧凑顶栏（单行命令条） ---- */
+.home-container .home-content .hero-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0 0;
+  margin: 0;
+
+  .hero-title {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .diagnostics-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #475569;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: inherit;
+    &:hover { background: rgba(15, 23, 42, 0.06); }
+    .material-symbols-outlined { font-size: 16px; }
+  }
+}
+
+.home-container .home-content .composer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  width: 100%;
+
+  .model-toggle-capsule { flex: 0 0 auto; }
+
+  .composer-textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    height: 44px;
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+
+  .char-count {
+    font-size: 11.5px;
+    flex: 0 0 auto;
+  }
+
+  .btn-run-composer {
+    flex: 0 0 auto;
+    margin: 0;
   }
 }

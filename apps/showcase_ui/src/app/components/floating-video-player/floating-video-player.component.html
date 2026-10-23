@@ -37,7 +37,7 @@ limitations under the License.
           {{ agentService.recordingPlaybackStatus() === 'live' ? 'sensors' : (agentService.playerMode() === 'steps' ? 'slideshow' : (agentService.recordingPlaybackStatus() === 'processing' ? 'progress_activity' : 'smart_display')) }}
         </span>
         <span class="header-title" [title]="agentService.activeVideoTitle()">
-          {{ agentService.recordingPlaybackStatus() === 'live' ? '设备实时画面' : (agentService.playerMode() === 'steps' ? ('分步回放 (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? '正在准备录像' : (agentService.activeVideoTitle() || 'Screen Recording'))) }}
+          {{ agentService.recordingPlaybackStatus() === 'live' ? '设备实时画面' : (agentService.playerMode() === 'steps' ? ('分步回放 (' + (totalStepFrames() > 0 ? (activeStepIndex() + 1) + '/' + totalStepFrames() : '0') + ')') : (agentService.recordingPlaybackStatus() === 'processing' ? '正在准备录像' : (agentService.activeVideoTitle() || '设备画面'))) }}
         </span>
       </div>
       <div class="header-actions" (mousedown)="$event.stopPropagation()">
@@ -408,16 +408,16 @@ limitations under the License.
                     }
                   }
                   <!-- Option C: EMPTY / FALLBACK STATE (Only when no video AND no step frames) -->
-                  @if (!agentService.isVideoLoading() && (agentService.playerMode() === 'video' || totalStepFrames() === 0) && (agentService.recordingPlaybackStatus() === 'failed' || agentService.recordingPlaybackStatus() === 'unavailable' || videoLoadError()) && totalStepFrames() === 0) {
+                  @if (!agentService.isVideoLoading() && (agentService.playerMode() === 'video' || totalStepFrames() === 0) && (agentService.recordingPlaybackStatus() === 'failed' || agentService.recordingPlaybackStatus() === 'unavailable' || agentService.recordingPlaybackStatus() === 'idle' || videoLoadError()) && totalStepFrames() === 0) {
                     <div class="empty-video-fallback">
                       <div class="fallback-icon-wrap">
                         <span class="material-symbols-outlined fallback-icon">videocam_off</span>
                       </div>
                       <h4 class="fallback-title">
-                        {{ agentService.recordingPlaybackStatus() === 'failed' || videoLoadError() ? 'Recording Playback Failed' : 'No 录像回放 Available' }}
+                        {{ agentService.recordingPlaybackStatus() === 'failed' || videoLoadError() ? '录像回放失败' : (agentService.recordingPlaybackStatus() === 'idle' ? '等待任务执行' : '暂无录像回放') }}
                       </h4>
                       <p class="fallback-desc">
-                        {{ videoLoadError() ? 'The finalized recording could not be played.' : (agentService.recordingPlaybackMessage() || 'No screen recording was found for this task.') }}
+                        {{ videoLoadError() ? '录像无法播放。' : (agentService.recordingPlaybackStatus() === 'idle' ? '运行任务后，这里将实时显示设备画面；结束后可以回放录像与分步截图。' : (agentService.recordingPlaybackMessage() || '未找到该任务的屏幕录像。')) }}
                       </p>
                       @if (agentService.recordingPlaybackStatus() === 'failed' || videoLoadError()) {
                         <button class="retry-btn" (click)="videoLoadError.set(false); agentService.retryVideoRecording()">

@@ -27,47 +27,17 @@
 
 
   <!-- Main Content Layout -->
-  <main class="home-content">
+  <main class="home-content" [class.workbench-lock]="activeTab() === 'launcher'">
     
     <!-- Task entry section -->
-    <section class="hero-section">
-      <h1 class="hero-title">
-        车机自动化工作台
-      </h1>
+    <section class="hero-section hero-row">
+      <h1 class="hero-title">车机自动化工作台</h1>
+      <button type="button" class="diagnostics-link" (click)="setTab('diagnostics')">
+        <span class="material-symbols-outlined">tune</span> 系统设置与前置条件
+      </button>
     </section>
 
     <!-- Top View Mode Stepper / Tab Switcher (Frosted Glass Segmented Control matching top-left nav) -->
-    <div class="mode-tabs-container">
-      <div class="mode-tabs">
-        <button
-          type="button"
-          class="mode-tab-btn"
-          [class.active]="activeTab() === 'diagnostics'"
-          (click)="setTab('diagnostics')"
-        >
-          @if (isReady()) {
-            <span class="material-symbols-outlined tab-icon icon-ready">check_circle</span>
-          } @else {
-            <span class="material-symbols-outlined tab-icon">tune</span>
-          }
-          <span class="tab-label">系统设置与前置条件 </span>
-        </button>
-
-        <button
-          type="button"
-          class="mode-tab-btn"
-          [class.active]="activeTab() === 'launcher'"
-          (click)="setTab('launcher')"
-        >
-          @if (!isReady()) {
-            <span class="material-symbols-outlined tab-icon icon-locked">lock</span>
-          } @else {
-            <span class="material-symbols-outlined tab-icon">rocket_launch</span>
-          }
-          <span class="tab-label">发起自主任务 </span>
-        </button>
-      </div>
-    </div>
 
     <!-- ========================================================================= -->
     <!-- VIEW 1: SYSTEM SETUP & FOOLPROOF STEP-BY-STEP GUIDANCE                    -->
@@ -1721,71 +1691,9 @@
         <!-- Task composer -->
         <div class="composer-card" [class.is-pro-active]="selectedProfile() === 'pro'">
           
-          <!-- Smart Intent Recommendation Strip (if detected) -->
-          @if (showIntentSuggestion()) {
-            <div class="intent-suggestion-strip">
-              <div class="suggestion-left">
-                <span class="material-symbols-outlined sparkle-icon">auto_awesome</span>
-                <span class="suggestion-text">
-                  检测到持续监控或复杂任务，推荐：<strong>Pro 模式</strong>
-                </span>
-              </div>
-              <button type="button" class="btn-switch-pro" (click)="setProfile('pro')">
-                <span>切换到 Pro </span>
-                <span class="material-symbols-outlined btn-arrow">arrow_forward</span>
-              </button>
-            </div>
-          }
-
           <!-- Borderless task input -->
-          <div class="composer-input-area">
-            <textarea
-              id="task-input-field"
-              class="composer-textarea"
-              rows="2"
-              [(ngModel)]="taskGoal"
-              [disabled]="isSubmitting()"
-              placeholder="描述你想在车机上完成的事（例如：打开导航，搜索最近的服务区）..."
-              (keydown.control.enter)="runTask()"
-              (keydown.meta.enter)="runTask()"
-            ></textarea>
-          </div>
-
-          <!-- Contextual Model Descriptor Strip (Clean & Unified for Flash & Pro) -->
-          <div class="composer-model-descriptor" [class.is-pro]="selectedProfile() === 'pro'">
-            <div class="descriptor-icon-wrap">
-              <span class="material-symbols-outlined">{{ selectedProfile() === 'flash' ? 'bolt' : 'psychology' }}</span>
-            </div>
-            <div class="descriptor-body">
-              @if (selectedProfile() === 'flash') {
-                <p class="desc-line">
-                  <span class="mode-name">Flash</span>
-                  <span class="bullet">·</span>
-                  <span>省 Token、快速（<strong>3–5s/步</strong>）基于实时画面直接决策，适合路径清晰的日常任务，长短皆可。</span>
-                  <span class="limitation-tag">（无规划、无结果校验、无 ADB 指令）</span>
-                </p>
-              } @else {
-                <p class="desc-line">
-                  <span class="mode-name">Pro</span>
-                  <span class="bullet">·</span>
-                  <span>先规划、校验结果，点击被阻断时可自动恢复。支持 <strong>100+ 步</strong> 工作流与车机实时监控（<strong>15–40s</strong>/步）。</span>
-                </p>
-              }
-            </div>
-          </div>
-
-          <!-- Error Banner if any -->
-          @if (errorMessage()) {
-            <div class="error-banner">
-              <span class="material-symbols-outlined error-icon">error</span>
-              <span>{{ errorMessage() }}</span>
-            </div>
-          }
-
-          <!-- Composer Bottom Action Bar -->
-          <div class="composer-action-bar">
-            <div class="bar-left">
-              <!-- Frosted Glass Architecture Toggle Capsule -->
+          <div class="composer-input-area composer-row">
+          <!-- Frosted Glass Architecture Toggle Capsule -->
               <div class="model-toggle-capsule">
                 <button
                   type="button"
@@ -1808,10 +1716,18 @@
                   <span class="btn-text">Pro</span>
                 </button>
               </div>
-            </div>
-
-            <div class="bar-right">
-              @if (taskGoal().length > 0) {
+          
+            <textarea
+              id="task-input-field"
+              class="composer-textarea"
+              rows="1"
+              [(ngModel)]="taskGoal"
+              [disabled]="isSubmitting()"
+              placeholder="描述你想在车机上完成的事（例如：打开导航，搜索最近的服务区）..."
+              (keydown.control.enter)="runTask()"
+              (keydown.meta.enter)="runTask()"
+            ></textarea>
+          @if (taskGoal().length > 0) {
                 <span class="char-count">{{ taskGoal().length }} 字</span>
               }
 
@@ -1830,11 +1746,20 @@
                   <span class="material-symbols-outlined run-icon">play_arrow</span><span>运行任务 </span>
                 }
               </button>
-            </div>
+        
           </div>
+
+          <!-- Error Banner if any -->
+          @if (errorMessage()) {
+            <div class="error-banner">
+              <span class="material-symbols-outlined error-icon">error</span>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
         </div>
 
-        <!-- Pro Mode Standalone Expected Output Card (Clean & Minimalist) -->
+                <!-- Pro Mode Standalone Expected Output Card (Clean & Minimalist) -->
         @if (selectedProfile() === 'pro') {
           <div class="pro-outputter-standalone-card">
             <div class="outputter-card-header">
@@ -1978,8 +1903,9 @@
             </div>
           </div>
         }
+      </section>
+    }
 
-        
     <!-- 企业工作台：设备画面与回放（主视图）/ 任务队列 / 用例中心 / 推理日志 -->
     @if (activeTab() === 'launcher') {
 <div class="wb-grid">
@@ -2002,9 +1928,11 @@
         <div class="wb-card-sub">动作感知 / 目标坐标 / 结构化总结，随执行滚动打印</div>
         <app-agent-stream class="wb-agent-stream"></app-agent-stream>
       </section>
-    </div>
-}
 
+    </div>
+    }
+
+    @if (activeTab() === 'launcher') {
     <!-- Recommended Tasks Hub (Clean & Direct) -->
         <div class="smart-suggestions-container">
           <!-- Header Bar: Clean Category Tabs & Shuffle -->
@@ -2121,8 +2049,6 @@
           </div>
         </div>
 
-
-      </section>
     }
 
   </main>

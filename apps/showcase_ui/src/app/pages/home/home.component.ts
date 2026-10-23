@@ -547,6 +547,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // 工作台：设备画面窗常驻打开（卡片内嵌，非悬浮）
+    this.agentService.isVideoWindowOpen.set(true);
 
     this.loadProTuningDefaults();
     // Initial fetch of system readiness & model configuration

@@ -64,7 +64,7 @@ body {
 .wb-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr) 132px;
+  grid-template-rows: minmax(0, 1.35fr) minmax(0, 0.95fr) 148px;
   grid-template-areas:
     "case   device"
     "queue  device"
@@ -137,3 +137,32 @@ body {
 
 /* enterprise fork: 中文字体栈（不改变布局） */
 html { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", system-ui, -apple-system, sans-serif; }
+
+
+/* 工作台：播放器窗嵌进设备卡片（取消悬浮定位） */
+.wb-video { display: flex; flex-direction: column; width: 100%; min-height: 0; flex: 1 1 auto; }
+.wb-video .floating-video-wrapper {
+  flex: 1 1 auto !important;
+  min-height: 0;
+  position: static !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: auto !important;
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  animation: none;
+}
+.wb-video .theater-backdrop { display: none !important; }
+
+/* 工作台：日志卡内部透明，贴合深色卡片 */
+.wb-log-card .agent-stream-container {
+  background: transparent !important;
+}
+
+.wb-video .video-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.wb-video .empty-video-fallback { flex: 1 1 auto; justify-content: center; }
